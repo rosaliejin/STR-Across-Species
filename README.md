@@ -16,7 +16,9 @@ $GENOMESDIR/$species/$species.fa
 
 e.g. `/storage/mgymrek/TReeofLife/genomes/bosTau7/bosTau7.fa`. Note, the directory name is the same as the short species name to make automated changing of paths easier. This could be replaced in the snakefile with a path to a different directory containing genomes.
 
-Output is written to `$TRFDIR`. The path to this can e changed in the snakefile.
+The output filtered STRs are written to `$TRFDIR`. The path to this can be changed in the snakefile.
+
+The Statistical Analysis as well as figure generated are stored in `$YJDIR`. The path to this can also be changed in the snakefile.
 
 To run, just type `snakemake`
 
