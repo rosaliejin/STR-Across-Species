@@ -1,11 +1,12 @@
 This snakemake workflow (in progress) does the following:
 
 1. Index fasta files
-2. Split fastas by chrom
-3. Call script to run TRF
-4. Filter TF
+2. Split fastas by chromosomes
+3. Call script to run Tandem Repeat Finder
+4. Filter Tandem Repeats founded
+5. Perform Statistical Analysis on STRs identified in each species
+6. Visualize Statistical Analysis
 
-Next up todo: run stats, fill in more species
 
 Currently, it assumes genome fasta files are in:
 
