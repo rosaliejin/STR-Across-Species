@@ -89,7 +89,7 @@ rule organize:
     output:
         "%s/organize_{species}.csv"%YJDIR, "%s/organize_{species}_unitlength.csv"%YJDIR
     shell:
-         "python3 \"STREvolution_Stat.py\" {input[0]} {input[1]} {input[2]} {wildcards.species} {output[0]} {input[3]} {output[1]}"
+         "python3 \"STREvolution_Stat.py\" {input[0]} {input[1]} {input[2]} {wildcards.species} {output[0]} {output[0]}"
 
 rule combine_organize:
     input:
