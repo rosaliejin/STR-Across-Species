@@ -12,9 +12,7 @@ rule all:
     input:
         "%s/TRSpecies_PeriodPercs.pdf"%YJDIR,
         "%s/TRSpecies_GenomePerc.pdf"%YJDIR,
-        "%s/TRSpecies_Density.pdf"%YJDIR,
-        "%s/TRSpecies_STRnum.pdf"%YJDIR,
-        "%s/organize_unit.csv"%YJDIR
+        "%s/TRSpecies_Density.pdf"%YJDIR
 
 
 rule index_fa:
@@ -84,73 +82,10 @@ rule str_base:
     shell:
          "awk '{{print length($6)}}'  {input[1]} | awk '{{sum+=$1 }}END{{ print sum }}'> {output}"
 
-#count the average length of each repeated unit
-#rule repeat_length:
-#    input:
-#        "%s/{species}/{species}.str_base.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-#    output:
-#        "%s/{species}/{species}.repeat_length.txt"%YJDIR
-#    shell:
-#         "for period in $(seq 1 6); do awk -v\"period=$period\" '$4==period'  {input} | awk '{{print length($6)}}' | awk '{{sum+=$1 }}END{{ print sum/NR }}'; done > {output}"
-
-#count the length of each homopolymer
-rule homo_length:
-    input:
-        "%s/{species}/{species}.str_base.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_homo.txt"%YJDIR
-    shell:
-        "awk '$4==1' {input[1]} | awk '{{print length($6)}}' > {output}"
-
-#count the length of each dinucleutide
-rule di_length:
-    input:
-        "%s/{species}/{species}.repeat_homo.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_di.txt"%YJDIR
-    shell:
-        "awk '$4==2' {input[1]} | awk '{{print length($6)}}' > {output}"
-
-        #count the length of each trinucleutide
-rule tri_length:
-    input:
-        "%s/{species}/{species}.repeat_di.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_tri.txt"%YJDIR
-    shell:
-        "awk '$4==3' {input[1]} | awk '{{print length($6)}}' > {output}"
-
-#count the length of each tetranucleutide
-rule tetra_length:
-    input:
-        "%s/{species}/{species}.repeat_tri.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_tetra.txt"%YJDIR
-    shell:
-        "awk '$4==4' {input[1]} | awk '{{print length($6)}}' > {output}"
-
-#count the length of each pentanucleutide
-rule penta_length:
-    input:
-        "%s/{species}/{species}.repeat_tetra.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_penta.txt"%YJDIR
-    shell:
-        "awk '$4==5' {input[1]} | awk '{{print length($6)}}' > {output}"
-
-#count the length of each hexanuleutide
-rule hexa_length:
-    input:
-        "%s/{species}/{species}.repeat_penta.txt"%YJDIR, "%s/{species}/{species}.trf.filt.bed"%TRFDIR
-    output:
-        "%s/{species}/{species}.repeat_hexa.txt"%YJDIR
-    shell:
-        "awk '$4==6' {input[1]} | awk '{{print length($6)}}' > {output}"
-
 #Creating table to organize annalysis
 rule organize:
     input:
-        "%s/{species}/{species}.str_count.txt"%YJDIR, "%s/{species}/{species}.genome_length.txt"%YJDIR, "%s/{species}/{species}.str_base.txt"%YJDIR, "%s/{species}/{species}.repeat_penta.txt"%YJDIR
+        "%s/{species}/{species}.str_count.txt"%YJDIR, "%s/{species}/{species}.genome_length.txt"%YJDIR, "%s/{species}/{species}.str_base.txt"%YJDIR
     output:
         "%s/organize_{species}.csv"%YJDIR, "%s/organize_{species}_unitlength.csv"%YJDIR
     shell:
@@ -175,7 +110,7 @@ rule plot:
     input:
        "%s/organize.csv"%YJDIR
     #if multiple figures are saved in this step, what should be the output?
-        "%s/TRSpecies_PeriodPercs.pdf"%YJDIR, "%s/TRSpecies_GenomePerc.pdf"%YJDIR, "%s/TRSpecies_Density.pdf"%YJDIR,"%s/TRSpecies_homopolymer.pdf"%YJDIR,"%s/TRSpecies_dinucleotide.pdf"%YJDIR,"%s/TRSpecies_trinucleotide.pdf"%YJDIR,"%s/TRSpecies_tetranucleotide.pdf"%YJDIR,"%s/TRSpecies_pentanucleotide.pdf"%YJDIR,"%s/TRSpecies_hexanucleotide.pdf"%YJDIR, "%s/TRSpecies_STRnum.pdf"%YJDIR
+        "%s/TRSpecies_PeriodPercs.pdf"%YJDIR, "%s/TRSpecies_GenomePerc.pdf"%YJDIR, "%s/TRSpecies_Density.pdf"%YJDIR
     output:
     shell:
         "python \"Tree_Of_Life_Graph.py\" {input[0]} {output}"
